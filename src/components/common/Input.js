@@ -45,6 +45,7 @@ const Input = ({
 Input.defaultProps = {
   autoCorrect: false,
   secureTextEntry: false,
+  value: '',
 };
 Input.propTypes = {
   autoCorrect: PropTypes.bool,
@@ -52,7 +53,7 @@ Input.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 export default Input;
