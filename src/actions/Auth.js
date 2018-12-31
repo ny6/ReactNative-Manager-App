@@ -22,6 +22,6 @@ export const loginUser = ({ email, password }) => async (dispatch) => {
     } else if (code === 'auth/user-not-found') {
       error = 'User not found!';
     }
-    return sendError(error, dispatch);
+    return sendError(dispatch, error);
   }
 };

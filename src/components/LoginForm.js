@@ -11,31 +11,38 @@ const errorClass = { fontSize: 20, alignSelf: 'center', color: 'red' };
 
 const LoginForm = ({
   email, password, ec, pc, lu, error,
-}) => (
-  <Card>
-    <CardSection>
-      <Input
-        label="Email"
-        placeholder="name@email.com"
-        onChangeText={ec}
-        value={email}
-      />
-    </CardSection>
-    <CardSection>
-      <Input
-        label="Password"
-        placeholder="password"
-        secureTextEntry
-        onChangeText={pc}
-        value={password}
-      />
-    </CardSection>
-    <Text style={errorClass}>{error}</Text>
-    <CardSection>
-      <Button text="Login" onPress={() => lu({ email, password })} />
-    </CardSection>
-  </Card>
-);
+}) => {
+  const renderError = () => {
+    if (error) return <Text style={errorClass}>{error}</Text>;
+    return null;
+  };
+
+  return (
+    <Card>
+      <CardSection>
+        <Input
+          label="Email"
+          placeholder="name@email.com"
+          onChangeText={ec}
+          value={email}
+        />
+      </CardSection>
+      <CardSection>
+        <Input
+          label="Password"
+          placeholder="password"
+          secureTextEntry
+          onChangeText={pc}
+          value={password}
+        />
+      </CardSection>
+      {renderError()}
+      <CardSection>
+        <Button text="Login" onPress={() => lu({ email, password })} />
+      </CardSection>
+    </Card>
+  );
+};
 
 LoginForm.defaultProps = {
   email: '',
