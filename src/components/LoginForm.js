@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Text } from 'react-native';
 import {
   Card, CardSection, Input, Button,
 } from './common';
-import { emailChange, passwordChange, loginUser } from '../actions';
+import { emailChange, passwordChange, loginUser } from '../actions/Auth';
+
+const errorClass = { fontSize: 20, alignSelf: 'center', color: 'red' };
 
 const LoginForm = ({
-  email, password, ec, pc, lu,
+  email, password, ec, pc, lu, error,
 }) => (
   <Card>
     <CardSection>
@@ -27,6 +30,7 @@ const LoginForm = ({
         value={password}
       />
     </CardSection>
+    <Text style={errorClass}>{error}</Text>
     <CardSection>
       <Button text="Login" onPress={() => lu({ email, password })} />
     </CardSection>
@@ -36,6 +40,7 @@ const LoginForm = ({
 LoginForm.defaultProps = {
   email: '',
   password: '',
+  error: '',
 };
 LoginForm.propTypes = {
   email: PropTypes.string,
@@ -43,9 +48,15 @@ LoginForm.propTypes = {
   ec: PropTypes.func.isRequired,
   pc: PropTypes.func.isRequired,
   lu: PropTypes.func.isRequired,
+  error: PropTypes.string,
 };
 
-const mapStateToProps = ({ auth: { email, password } }) => ({ email, password });
+const mapStateToProps = ({
+  auth: { email, password },
+  alert: { error },
+}) => ({
+  email, password, error,
+});
 const mapDispatchToProps = dispatch => ({
   ec: text => dispatch(emailChange(text)),
   pc: text => dispatch(passwordChange(text)),
