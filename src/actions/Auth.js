@@ -1,5 +1,5 @@
 import { auth } from 'firebase';
-import { sendError } from './Alert';
+import { sendError, startLoading, finishLoading } from './Alert';
 import { EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS } from '.';
 
 export const emailChange = text => dispatch => dispatch({
@@ -11,9 +11,13 @@ export const passwordChange = text => dispatch => dispatch({
 
 export const loginUser = ({ email, password }) => async (dispatch) => {
   try {
+    startLoading(dispatch);
+    if (!email || !password) throw new Error('All fields are mandatory!');
     const res = await auth().signInWithEmailAndPassword(email, password);
+    finishLoading(dispatch);
     return dispatch({ type: LOGIN_USER_SUCCESS, payload: res.user });
   } catch ({ code, message }) {
+    finishLoading(dispatch);
     let error = message || 'Something went wrong!';
     if (code === 'auth/invalid-email') {
       error = 'Email is not valid!';

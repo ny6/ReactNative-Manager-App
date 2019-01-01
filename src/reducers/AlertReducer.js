@@ -1,15 +1,22 @@
-import { SEND_ERROR, SEND_MESSAGE, RESET_ALERTS } from '../actions';
+import {
+  SEND_ERROR, SEND_MESSAGE, RESET_ALERTS,
+  LOADING_START, LOADING_FINISH,
+} from '../actions';
 
-const defaultState = { error: '', message: '' };
+const defaultState = { error: '', message: '', loading: false };
 
 export default (state = defaultState, { type, payload }) => {
   switch (type) {
     case SEND_ERROR:
-      return { error: payload, message: '' };
+      return { ...state, error: payload, message: '' };
     case SEND_MESSAGE:
-      return { error: '', message: payload };
+      return { ...state, error: '', message: payload };
+    case LOADING_START:
+      return { ...state, loading: true };
+    case LOADING_FINISH:
+      return { ...state, loading: false };
     case RESET_ALERTS:
-      return defaultState;
+      return { ...state, error: '', message: '' };
     default:
       return state;
   }

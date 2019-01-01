@@ -4,3 +4,5 @@ export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const SEND_ERROR = 'SEND_ERROR';
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 export const RESET_ALERTS = 'RESET_ALERTS';
+export const LOADING_START = 'LOADING_START';
+export const LOADING_FINISH = 'LOADING_FINISH';

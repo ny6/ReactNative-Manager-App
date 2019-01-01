@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 import {
-  Card, CardSection, Input, Button,
+  Card, CardSection, Input, Button, Spinner,
 } from './common';
 import { emailChange, passwordChange, loginUser } from '../actions/Auth';
 
 const errorClass = { fontSize: 20, alignSelf: 'center', color: 'red' };
 
 const LoginForm = ({
-  email, password, ec, pc, lu, error,
+  email, password, ec, pc, lu, error, loading,
 }) => {
   const renderError = () => {
     if (error) return <Text style={errorClass}>{error}</Text>;
@@ -38,7 +38,7 @@ const LoginForm = ({
       </CardSection>
       {renderError()}
       <CardSection>
-        <Button text="Login" onPress={() => lu({ email, password })} />
+        {loading ? <Spinner /> : <Button text="Login" onPress={() => lu({ email, password })} />}
       </CardSection>
     </Card>
   );
@@ -56,13 +56,14 @@ LoginForm.propTypes = {
   pc: PropTypes.func.isRequired,
   lu: PropTypes.func.isRequired,
   error: PropTypes.string,
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = ({
   auth: { email, password },
-  alert: { error },
+  alert: { error, loading },
 }) => ({
-  email, password, error,
+  email, password, error, loading,
 });
 const mapDispatchToProps = dispatch => ({
   ec: text => dispatch(emailChange(text)),

@@ -9,7 +9,7 @@ export default (state = defaultState, { type, payload }) => {
     case PASSWORD_CHANGED:
       return { ...state, password: payload };
     case LOGIN_USER_SUCCESS:
-      return { ...state, user: payload };
+      return { ...state, ...defaultState, user: payload };
     default:
       return state;
   }
