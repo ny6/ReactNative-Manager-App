@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import PropTypes from 'prop-types';
+import { Actions } from 'react-native-router-flux';
 import { CardSection } from './common';
 
 const titleStyle = {
@@ -8,14 +9,19 @@ const titleStyle = {
   paddingLeft: 15,
 };
 
-const ListItem = ({ name }) => (
-  <CardSection>
-    <Text style={titleStyle}>{name}</Text>
-  </CardSection>
+const ListItem = employee => employee.name && (
+  <TouchableWithoutFeedback onPress={() => Actions.employeeEdit({ employee })}>
+    <View>
+      <CardSection>
+        <Text style={titleStyle}>{employee.name}</Text>
+      </CardSection>
+    </View>
+  </TouchableWithoutFeedback>
 );
 
+ListItem.defaultProps = { employee: {} };
 ListItem.propTypes = {
-  name: PropTypes.string.isRequired,
+  employee: PropTypes.shape({}),
 };
 
 export default ListItem;
