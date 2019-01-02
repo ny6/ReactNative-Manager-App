@@ -3,6 +3,7 @@ import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import forEach from 'lodash.foreach';
+import { text } from 'react-native-communications';
 import {
   Button, Card, CardSection, Spinner,
 } from './common';
@@ -49,6 +50,12 @@ class EmployeeEdit extends Component {
               })}
             />
           )}
+        </CardSection>
+        <CardSection>
+          <Button
+            text="Send Message"
+            onPress={() => text(phone, `Your upcoming shift is on ${shift}!`)}
+          />
         </CardSection>
       </Card>
     );
