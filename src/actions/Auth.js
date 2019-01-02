@@ -6,6 +6,7 @@ import { EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS } from '.';
 export const emailChange = text => dispatch => dispatch({
   type: EMAIL_CHANGED, payload: text,
 });
+
 export const passwordChange = text => dispatch => dispatch({
   type: PASSWORD_CHANGED, payload: text,
 });
