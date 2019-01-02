@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Card, CardSection } from './common';
+import lodashMap from 'lodash.map';
+import { Card } from './common';
+import { fetchEmployees } from '../actions/Employee';
+import ListItem from './ListItem';
 
 const styles = {
   alertClass: {
@@ -11,7 +14,10 @@ const styles = {
   },
 };
 class EmployeeList extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    const { fetchData } = this.props;
+    fetchData();
+  }
 
   renderAlerts = () => {
     const { error, message } = this.props;
@@ -22,10 +28,15 @@ class EmployeeList extends Component {
   };
 
   render() {
+    const { employees } = this.props;
     return (
       <Card>
         {this.renderAlerts()}
-        <CardSection />
+        <FlatList
+          data={employees}
+          renderItem={x => <ListItem {...x.item} />}
+          keyExtractor={({ uid }) => uid}
+        />
       </Card>
     );
   }
@@ -34,12 +45,24 @@ class EmployeeList extends Component {
 EmployeeList.defaultProps = {
   error: '',
   message: '',
+  employees: [],
 };
 EmployeeList.propTypes = {
   error: PropTypes.string,
   message: PropTypes.string,
+  fetchData: PropTypes.func.isRequired,
+  employees: PropTypes.instanceOf(Array),
 };
 
-const mapDispatchToProps = ({ alert: { error, message } }) => ({ error, message });
+const mapStateToProps = ({
+  alert: { error, message },
+  employee: { employees: emps },
+}) => {
+  const employees = lodashMap(emps, (val, uid) => ({ ...val, uid }));
+  return { error, message, employees };
+};
+const mapDispatchToProps = dispatch => ({
+  fetchData: () => dispatch(fetchEmployees()),
+});
 
-export default connect(mapDispatchToProps)(EmployeeList);
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeList);

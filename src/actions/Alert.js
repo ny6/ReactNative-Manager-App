@@ -8,7 +8,7 @@ export const sendMessage = (dispatch, msg) => {
   setTimeout(() => dispatch({ type: RESET_ALERTS }), 5000);
 };
 
-export const sendError = (dispatch, err) => {
+export const sendError = (dispatch, err = 'Something went wrong!') => {
   dispatch({ type: SEND_ERROR, payload: err });
   setTimeout(() => dispatch({ type: RESET_ALERTS }), 5000);
 };
