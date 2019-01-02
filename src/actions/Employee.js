@@ -56,3 +56,23 @@ export const employeeEdit = values => async (dispatch) => {
     return sendError(dispatch, message);
   }
 };
+
+export const deleteEmployee = id => async (dispatch) => {
+  try {
+    startLoading(dispatch);
+    const { currentUser } = auth();
+    if (!currentUser) throw new Error('You are not authorized!');
+
+    await database()
+      .ref(`/users/${currentUser.uid}/employees/${id}`)
+      .remove();
+
+    sendMessage(dispatch, 'Employee deleted!');
+    dispatch({ type: EMPLOYEE_ADDED });
+    finishLoading(dispatch);
+    return Actions.pop();
+  } catch ({ message }) {
+    finishLoading(dispatch);
+    return sendError(dispatch, message);
+  }
+};

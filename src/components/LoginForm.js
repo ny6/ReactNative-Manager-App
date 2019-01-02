@@ -13,7 +13,7 @@ const LoginForm = ({
   email, password, ec, pc, lu, error, loading,
 }) => {
   const renderError = () => {
-    if (error) return <Text style={errorClass}>{error}</Text>;
+    if (error) return <CardSection><Text style={errorClass}>{error}</Text></CardSection>;
     return null;
   };
 

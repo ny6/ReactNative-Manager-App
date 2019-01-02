@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import forEach from 'lodash.foreach';
 import { text } from 'react-native-communications';
 import {
-  Button, Card, CardSection, Spinner,
+  Button, Card, CardSection, Spinner, ConfirmModal,
 } from './common';
-import { employeeEdit, employeeUpdate } from '../actions/Employee';
+import { employeeEdit, employeeUpdate, deleteEmployee } from '../actions/Employee';
 import EmployeeForm from './EmployeeForm';
 
 const styles = {
@@ -19,6 +19,8 @@ const styles = {
 };
 
 class EmployeeEdit extends Component {
+  state = { showModal: false };
+
   componentDidMount() {
     const { eu, employee } = this.props;
     forEach(employee, (value, prop) => {
@@ -29,13 +31,15 @@ class EmployeeEdit extends Component {
   renderError = () => {
     const { errorClass } = styles;
     const { error } = this.props;
-    if (error) return <Text style={errorClass}>{error}</Text>;
+    if (error) return <CardSection><Text style={errorClass}>{error}</Text></CardSection>;
     return null;
   };
 
   render() {
+    const { showModal } = this.state;
     const {
-      name, phone, shift, loading, ee, employee: { uid },
+      name, phone, shift, loading,
+      de, ee, employee: { uid },
     } = this.props;
     return (
       <Card>
@@ -57,6 +61,15 @@ class EmployeeEdit extends Component {
             onPress={() => text(phone, `Your upcoming shift is on ${shift}!`)}
           />
         </CardSection>
+        <CardSection>
+          <Button text="Delete" onPress={() => this.setState({ showModal: true })} />
+        </CardSection>
+        <ConfirmModal
+          visible={showModal}
+          text="Are you sure want to delete this?"
+          onAccept={() => de(uid)}
+          onDecline={() => this.setState({ showModal: false })}
+        />
       </Card>
     );
   }
@@ -76,6 +89,7 @@ EmployeeEdit.propTypes = {
   loading: PropTypes.bool.isRequired,
   eu: PropTypes.func.isRequired,
   ee: PropTypes.func.isRequired,
+  de: PropTypes.func.isRequired,
   employee: PropTypes.shape({}).isRequired,
 };
 
@@ -88,6 +102,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   ee: values => dispatch(employeeEdit(values)),
   eu: values => dispatch(employeeUpdate(values)),
+  de: id => dispatch(deleteEmployee(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeEdit);

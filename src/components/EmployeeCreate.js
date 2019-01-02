@@ -22,7 +22,7 @@ const EmployeeCreate = (props) => {
   } = props;
   const renderError = () => {
     const { errorClass } = styles;
-    if (error) return <Text style={errorClass}>{error}</Text>;
+    if (error) return <CardSection><Text style={errorClass}>{error}</Text></CardSection>;
     return null;
   };
 
