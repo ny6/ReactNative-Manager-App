@@ -1,4 +1,5 @@
 import { auth } from 'firebase';
+import { Actions } from 'react-native-router-flux';
 import { sendError, startLoading, finishLoading } from './Alert';
 import { EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS } from '.';
 
@@ -15,7 +16,8 @@ export const loginUser = ({ email, password }) => async (dispatch) => {
     if (!email || !password) throw new Error('All fields are mandatory!');
     const res = await auth().signInWithEmailAndPassword(email, password);
     finishLoading(dispatch);
-    return dispatch({ type: LOGIN_USER_SUCCESS, payload: res.user });
+    dispatch({ type: LOGIN_USER_SUCCESS, payload: res.user });
+    return Actions.main();
   } catch ({ code, message }) {
     finishLoading(dispatch);
     let error = message || 'Something went wrong!';
